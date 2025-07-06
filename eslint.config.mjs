@@ -11,9 +11,10 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.config({
-    extends: ["next", "plugin:mdx/recommended", "plugin:prettier/recommended"],
+    extends: ["next", "plugin:mdx/recommended"],
     plugins: ["mdx", "prettier"],
     rules: {
+      "no-unused-expressions": "off",
       "react/no-unescaped-entities": "off",
       "@next/next/no-page-custom-font": "off",
     },

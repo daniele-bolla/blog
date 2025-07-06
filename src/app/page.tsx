@@ -1,13 +1,14 @@
-import Link from 'next/link'
+import Link from "next/link";
 
 const posts = [
   {
-    slug: 'rsa',
-    title: 'Understanding RSA',
-    description: 'A mathematical and JavaScript-based explanation of RSA encryption.',
-    date: '2025-07-04',
+    slug: "post/rsa",
+    title: "Understanding RSA",
+    description:
+      "A mathematical and JavaScript-based explanation of RSA encryption.",
+    date: "2025-07-04",
   },
-]
+];
 
 export default function Home() {
   return (
@@ -27,5 +28,5 @@ export default function Home() {
         ))}
       </ul>
     </main>
-  )
+  );
 }

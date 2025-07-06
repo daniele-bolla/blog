@@ -11,7 +11,7 @@ const withMDX = require("@next/mdx")({
 const nextConfig = {
   output: "export",
   trailingSlash: true,
-  basePath: "/your-repo-name",
+  basePath: "/blog",
 };
 
 module.exports = withMDX(nextConfig);

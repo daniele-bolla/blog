@@ -1,4 +1,9 @@
-// next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: "export",
+  trailingSlash: true, // GitHub Pages requires this
+  basePath: "/blog", //
+};
 const withMDX = require("@next/mdx")({
   extension: /\.mdx?$/,
   options: {
@@ -7,11 +12,4 @@ const withMDX = require("@next/mdx")({
   },
 });
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  output: "export",
-  trailingSlash: true,
-  basePath: "/blog",
-};
-
-module.exports = withMDX(nextConfig);
+export default withMDX(nextConfig);

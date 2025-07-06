@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "deploy": "npm run build && touch out/.nojekyll && gh-pages -d out -t true",
+    "deploy": "npm run build && gh-pages -d out -t true",
     "start": "next start",
     "lint": "next lint"
   },

@@ -8,7 +8,14 @@ const withMDX = require("@next/mdx")({
   extension: /\.mdx?$/,
   options: {
     remarkPlugins: [require("remark-math")],
-    rehypePlugins: [require("rehype-katex")],
+    rehypePlugins: [
+      [
+        require("rehype-katex"),
+        {
+          output: "mathml",
+        },
+      ],
+    ],
   },
 });
 

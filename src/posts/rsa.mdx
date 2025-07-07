@@ -191,18 +191,29 @@ a mod b = ((a % b) + b) % b
 ```
 
 We can rewrite equation $e \times d = 1 \mod \phi(n)$ as $d = e^{-1} \mod \phi(n)$.
-$e^{-1} is the modular inverse. The existence of a modular inverse is 
-ensured by the fact that $e$ and $\phi(n)$ are coprime (remebmer the porevious step?).
-We can acttula informally see why this happens
+$e^{-1}$ is the modular inverse. The existence of a modular inverse is
+ensured by the fact that $e$ and $\phi(n)$ are coprime (remember the previous step?).
 
-$$
+So to compute $d$, we used the fact that there exists a modular inverse of e.
+We want to find an alghorith to compute it.
+In this [article](https://cp-algorithms.com/algebra/module-inverse.html)
+The [extended euclidean alghorith](https://brilliant.org/wiki/extended-euclidean-algorithm/) is often used to find the multplicative inverse.
+Anyway i will opt for another methos wich is central in understanding why the encryption/decription
+system works so smootlhy.
+The methos relies on the Euler's Theorem.
 
-$$
-
-<CalloutBox type="definition" title="Modular inverse">
-  Let $a, b$ be integers and $m$ a positive integers greater then zero. We say
-  that $a$ is congruent to $b$ mod $m$ ($ a = b \mod m $), if there exists an
-  integer $k$, such that $a = b + km$
+<CalloutBox type="theorem" title="Euler's Theorem">
+  Let $m$ be a positive integer, now for any integer $a$ coprime to $m$, we have:
+  $$
+    a^{\phi(m)} = 1 \mod m
+  $$
 </CalloutBox>
 
-So to compute $d$, we used the fact that there exists a modular
+Bob can use Euler's Theorem to calculate $e^{-1}$ since he know $\phi(n)$ (remebmer the factorization diffculty).
+
+$$
+
+e^{\phi(n)}  = 1 \mod n
+
+
+$$

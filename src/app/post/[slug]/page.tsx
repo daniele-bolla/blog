@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { compileMDX } from "next-mdx-remote/rsc"; // yes, now works in App Router
+import { compileMDX } from "next-mdx-remote/rsc";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 import CalloutBox from "@/components/CalloutBox";

@@ -2,43 +2,52 @@ import CalloutBox from "@/components/CalloutBox";
 
 # Understanding RSA
 
-RSA is one of the first public-key encryption algorithms ever used. For this reason, it serves well as a pedagogical example for readers curious about **cryptography**.
+RSA is one of the first public-key encryption algorithms ever used.
+For this reason, it serves well as a pedagogical example for readers curious about **cryptography**.
 
-In this post, I’ll focus more on the mathematical aspects of RSA — specifically **number theory**.
+In this post, I’ll focus more on the mathematical aspects of RSA and specifically **number theory**.
 
-Let’s begin by understanding the system. RSA relies on a **pair of keys**: one **public**, which can be shared openly, and one **private**, which must be kept secret by its owner.
+---
+
+## Let’s begin by understanding the system.
+
+RSA relies on a **pair of keys**: one **public**, which can be shared openly, and one **private**, which must be kept secret by its owner.
 
 The standard example involves Bob and Alice exchanging messages.  
 Since they want to encrypt their communication using RSA, each of them has such a key pair.
 
 Confident in the system, Alice wants to send a message to Bob. She uses Bob’s **public key** to **encrypt** the message.
 
-At this point, Bob — <u>and Bob only</u> — can **decrypt** the message using his **private key**.
+At this point, Bob (<u>and Bob only</u>) can **decrypt** the message using his **private key**.
 
-The security of this system relies on the fact that Bob’s private key is known only to him.  
-The algorithm ensures that messages encrypted with the public key can only be decrypted using the corresponding private key — in a mathematically elegant way known as **modular arithmetic**.
+The security of this system relies on the fact that Bob's private key is known only to him.
+
+Using this private key, Bob can decrypt messages that were encrypted with his corresponding public key through a fascinating
+mathematical process based on **modular arithmetic**.
 
 ---
 
-Generating such public/private key pairs involves fundamental number theory concepts, particularly **prime numbers**.  
-You may recall that a prime number is a **natural number** (positive integer) greater than 1, divisible only by 1 and itself.
+## Key Generation
 
-<CalloutBox type="example" title="Prime factorization">
-  3 and 7 are prime numbers, while 21 is not. It can be expressed as a product
-  of primes: 3 × 7.
+Generating such public/private key pairs involves fundamental number theory concepts, particularly **prime numbers**.  
+You may recall that a prime number is a positive integer greater than 1, divisible only by 1 and itself.
+
+<CalloutBox type="example" title="Prime">
+  $3$ and $7$ are prime numbers, while $21$ is not. It can be expressed as a
+  product of primes: $3 \times 7$.
 </CalloutBox>
 
-Prime numbers are the **atoms** of natural numbers. Every natural number can be constructed as a product of primes (factorization).  
-This factorization is **unique**, up to the order of the factors.
+Prime numbers are the **atoms** of the integers. Every positive integer can be constructed as a product of primes (factorization).
 
 <CalloutBox type="example" title="Prime factorization">
   $21 = 7 \times 3$ or $3 \times 7$
 </CalloutBox>
 
-This is formalized in a famous result known as the **Fundamental Theorem of Arithmetic**, or **Unique Factorization Theorem (UFT)**.
+This is formalized in a famous result known as the **Fundamental Theorem of
+Arithmetic**, or **Unique Factorization Theorem (UFT)**.
 
 <CalloutBox type="theorem" title="Unique Factorization Theorem">
-  Every natural number can be uniquely factorized (up to ordering) into its
+  Every positive integer can be uniquely factorized (up to ordering) into its
   **prime factors**.
 </CalloutBox>
 
@@ -53,8 +62,6 @@ Another example of prime factorization:
   $6615 = 3^3 \times 7^2 \times 5$
 </CalloutBox>
 
----
-
 Now let’s return to RSA and the **key generation process**.  
 Bob can generate a pair of keys using the following steps:
 
@@ -63,8 +70,8 @@ Bob can generate a pair of keys using the following steps:
     <li>Choose two primes: $p$ and $q$</li>
     <li>Compute $n = p \times q$</li>
     <li>Compute $\phi(n) = (p − 1)(q − 1)$</li>
-    <li>Choose $e$ such that $1 < e < \phi(n)$ and $gcd(e, \phi(n)) = 1$</li>
-    <li>Find $d$ such that $e \times d \equiv 1 \mod \phi(n)$</li>
+    <li>Choose $e$ such that $1 < e < \phi(n)$ where $e$ is coprime to $\phi(n)$ ($gcd(e, \phi(n)) = 1$)</li>
+    <li>Find $d$ such that $e \times d = 1 \mod \phi(n)$</li>
     <li>The public key is $(e, n)$; the private key consists of $(d, p, q)$</li>
   </ol>
 </CalloutBox>
@@ -72,24 +79,18 @@ Bob can generate a pair of keys using the following steps:
 Some of these steps rely on concepts we haven’t yet defined.  
 Let’s walk through them one by one.
 
----
-
-## Step 1: Choose two primes
+### Step 1: Choose two primes
 
 Bob first chooses two distinct prime numbers: $p$ and $q$.
 
 These primes should be large enough (at least 20 digits) to ensure the system’s security.  
-It is **notoriously difficult** to factor the product of two large primes — the basis of RSA’s strength.
+It is **notoriously difficult** to factor the product of two large primes and this is the basis of RSA’s strength.
 
----
+### Step 2: Compute $n = p \times q$
 
-## Step 2: Compute $n = p \times q$
+This is straightforward.
 
-This is straightforward — $n$ is the product of the two primes.
-
----
-
-## Step 3: Compute $\phi(n) = (p − 1)(q − 1)$
+### Step 3: Compute $\phi(n) = (p − 1)(q − 1)$
 
 Here we introduce $\phi(n)$, the **Euler's totient function**.
 
@@ -107,27 +108,25 @@ But what does “coprime” mean?
 
 Two positive integers are **coprime** if they have no common prime factors other than 1.
 
-In particular, if $n$ is a prime number, then $\phi(n) = n - 1$.
+In particular, if $n$ is a prime number, then $\phi(n) = n - 1$. Why?
 
-Since $p$ and $q$ are distinct primes, they’re coprime — so:  
+It also follows that when $p$ and $q$ are coprime (distinct primes are coprime)
 $\phi(n) = (p − 1)(q − 1)$.
 
-Note: computing $\phi(n)$ from just $n$ would require factoring $n$, which is computationally hard — another pillar of RSA’s security.
+Note: computing $\phi(n)$ from just $n$ would require factoring $n$, which is copmputationlly hard (recall step 1) if you don't know $p$ and $q$.
 
----
-
-## Step 4: Choose $e$ such that $1 < e < \phi(n)$ and $gcd(e, \phi(n)) = 1$
+### Step 4: Choose $e$ such that $1 < e < \phi(n)$ where $e$ is coprime to $\phi(n)$ ($gcd(e, \phi(n)) = 1$)$
 
 Now Bob must choose an **exponent** $e$.
 
 It should satisfy:
 
 - $1 < e < \phi(n)$
-- $gcd(e, \phi(n)) = 1$
+- $e$ is coprime to $\phi(n)$ or, algorithmically, $gcd(e, \phi(n)) = 1$
 
-A common choice is $e = 2^{16} + 1$ (65,537) — large enough for security, small enough for efficiency.
+A common choice is $e = 2^{16} + 1$ (65,537); large enough for security, small enough for efficiency.
 
-To check whether $e$ and $\phi(n)$ are coprime, we use the **greatest common divisor (gcd)**.
+To check whether $e$ and $\phi(n)$ are coprime, Bob can use the **greatest common divisor (gcd)**.
 
 <CalloutBox type="definition" title="GCD">
   The **greatest common divisor** of two integers is the largest positive
@@ -138,20 +137,22 @@ To check whether $e$ and $\phi(n)$ are coprime, we use the **greatest common div
   The gcd of $12$ and $15$ is $3$, since it divides both without a remainder.
 </CalloutBox>
 
-To compute the gcd, Bob can use the **Euclidean algorithm**, one of the oldest known algorithms (from _Elements_, c. 300 BC):
+To compute the gcd, Bob can use the **Euclidean algorithm**, one of the oldest known algorithms (from _Elements_, c. 300 BC).
+The algorithm is based on the following principle:
 
 <CalloutBox type="theorem" title="">
   If $a \neq 0$ and $b = aq + r$ for some $q$ and $r$, then $$ \gcd(a, b) =
   \gcd(a, r) $$
 </CalloutBox>
 
-Steps to compute it:
+It's extremely easy top write the algorithm in javascript:
 
 1. Let $a$ and $b$ be two positive integers (swap if $b > a$)
 2. If $b = 0$, then $\gcd(a, b) = a$
-3. Otherwise, replace $a$ with $b$, and $b$ with $a \% b$
+3. Otherwise, replace $a$ with $b$, and $b$ with $r$
 4. Repeat until $b = 0$
 
+$r$ is the reminder computed using javascript [remainder operator `%`](https://262.ecma-international.org/5.1/#sec-11.5.2).
 The last non-zero remainder is the gcd.
 
 ```ts
@@ -160,9 +161,8 @@ function gcd(a, b) {
 }
 ```
 
-`%` is the **remainder operator** in JavaScript — [see the specification here](https://262.ecma-international.org/5.1/#sec-11.5.2).
-
-With this, Bob can algorithmically determine whether two integers are **coprime**:
+Notice the nice recursion!
+Now, Bob can algorithmically determine whether two integers are **coprime**:
 
 <CalloutBox type="definition" title="Coprime">
   Two integers are <strong>coprime</strong> if their greatest common divisor
@@ -170,57 +170,29 @@ With this, Bob can algorithmically determine whether two integers are **coprime*
 </CalloutBox>
 
 <CalloutBox type="example" title="Coprime">
-  The integers 8 and 15 are coprime because their gcd is 1, meaning they have no
-  common prime factors.
+  The integers 8 and 15 are coprime because their gcd is 1.
 </CalloutBox>
 
-## Step 5: Find $d$ such that $e \times d \equiv 1 \mod \phi(n)$
+### Step 5: Find $d$ such that $e \times d = 1 \mod \phi(n)$
 
-This equation means that $d$ is the **modular inverse** of $e$ modulo $\phi(n)$.
+The equation $e \times d = 1 \mod \phi(n)$ must be read as
+$e \times d$ is congruent $1$ modulo $\phi(n)$.
 
-Let’s explore **modular arithmetic**, starting with the concept of **modular congruence**.
+We now delve into modular arithmetic, starting with its foundation:
+**modular congruence**.
 
 <CalloutBox type="definition" title="Modular Congruence">
-  Let $a$ and $b$ be integers, and let $m &gt; 0$ be a positive integer.
-  <br />
-  We say that $a$ is <strong>congruent</strong> to $b$ modulo $m$ — written as{" "}
-  <br />
-  <code>a \equiv b \mod m</code> — if there exists an integer $k$ such that:
-  <br />
-  <code>a = b + km</code>
+  Let $a$ and $b$ be integers, and let $m$ be a positive integer. We say that
+  $a$ is <strong>congruent</strong> to $b$ modulo $m$ (written as $a = b \mod
+  m$), if there exists an integer $k$ such that: $a = b + km$.
 </CalloutBox>
 
-In this context, $b$ is the **remainder** when dividing $a$ by $m$.
+Nothe: $b$ is the **remainder** when dividing $a$ by $m$.
 
-JavaScript doesn’t have a true `mod` operator — only a **remainder operator** `%`, which behaves slightly differently for negative numbers.  
+JavaScript doesn’t have a true `mod` operator, only a **remainder operator** `%`, which behaves slightly differently for negative numbers.  
 (See [this StackOverflow post](https://stackoverflow.com/questions/25726760/javascript-modular-arithmetic)).
 
-To get a proper mod behavior, you can define your own function:
-
-```js
-const mod = (a, b) => ((a % b) + b) % b;
-```
-
-We can rewrite equation $e \times d = 1 \mod \phi(n)$ as $d = e^{-1} \mod \phi(n)$.
-$e^{-1}$ is the modular inverse. The existence of a modular inverse is
-ensured by the fact that $e$ and $\phi(n)$ are coprime (remember the previous step?).
-
-So to compute $d$, we used the fact that there exists a modular inverse of e.
-We want to find an alghorith to compute it.
-In this [article](https://cp-algorithms.com/algebra/module-inverse.html)
-The [extended euclidean alghorith](https://brilliant.org/wiki/extended-euclidean-algorithm/) is often used to find the multplicative inverse.
-Anyway i will opt for another methos wich is central in understanding why the encryption/decription
-system works so smootlhy.
-The methos relies on the Euler's Theorem.
-
-<CalloutBox type="theorem" title="Euler's Theorem">
-  Let $m$ be a positive integer, now for any integer $a$ coprime to $m$, we have:
-  $$
-    a^{\phi(m)} = 1 \mod m
-  $$
-</CalloutBox>
-
-Bob can use Euler's Theorem to calculate $e^{-1}$ since he know $\phi(n)$ (remebmer the factorization diffculty).
+There is anyway a [proposal](https://github.com/tc39/proposal-integer-and-modulus-math).
 
 Now, the equation  
 $e \times d \equiv 1 \mod \phi(n)$  
@@ -229,41 +201,68 @@ $d = e^{-1} \mod \phi(n)$
 
 That is: $d$ is the **modular inverse** of $e$ modulo $\phi(n)$.
 
-Such a modular inverse exists **only if** $e$ and $\phi(n)$ are coprime — which, by construction, they are.
+Such a modular inverse exists **only if** $e$ and $\phi(n)$ are coprime (and by step 4 they are).
 
 To compute $d$, Bob can use the **Extended Euclidean Algorithm**, a standard method for finding modular inverses.
 
 - [Here’s a nice explanation](https://cp-algorithms.com/algebra/module-inverse.html)
 - Or see [this one on Brilliant](https://brilliant.org/wiki/extended-euclidean-algorithm/)
 
-However, there's another elegant method — central to understanding how RSA works — based on **Euler's Theorem**:
+For theoretical reasons, I'll introduce a more elegant method based on **Euler's Theorem**,
+which provides deeper insight into why RSA encryption\decription works so smootlhy.
 
 <CalloutBox type="theorem" title="Euler's Theorem">
   Let $m$ be a positive integer. For any integer $a$ that is coprime to $m$, we have:  
-  $$a^{\phi(m)} \equiv 1 \mod m$$
+  $$a^{\phi(m)} = 1 \mod m$$
 </CalloutBox>
 
-Since Bob knows $\phi(n)$ (thanks to his knowledge of $p$ and $q$), he can use Euler's Theorem to compute $e^{-1}$:
+Since Bob knows $\phi(n)$, he can use Euler's Theorem to compute $e^{-1}$:
 
 $$
-e^{\phi(n)} \equiv 1 \mod n
+  e^{\phi(n)} \equiv 1 \mod n
 $$
 
 This implies:
 
 $$
-e^{\phi(n) - 1} \equiv e^{-1} \mod n
+  e^{\phi(n) - 1} \equiv e^{-1} \mod n
 $$
 
 So Bob can compute:
 
 $$
-d = e^{\phi(n) - 1} \mod \phi(n)
+  d = e^{\phi(n) - 1} \mod \phi(n)
 $$
 
 to obtain the **modular inverse**.
 
-> 📝 $e^{\phi(n) - 1}$ is computed through exponentiation algorithm
+$e^{\phi(n) - 1}$ is calculated through the fast [exponentiation algorithm](https://www.khanacademy.org/computing/computer-science/cryptography/modarithmetic/a/modular-exponentiation) (also known as exponentiation by squaring or binary exponentiation)
 
-> 📝 In practice, modular inverses are computed using the extended Euclidean algorithm for performance, but **Euler's Theorem**
-> provides the theoretical foundation that makes RSA possible.
+---
+
+## Encryption/Decritpion
+
+### Encryption
+
+Now Bob have already shared his public-key $(e,n)$ to Alice.
+
+Alice will be able to send a message to Bob in the following way:
+
+- She converts the message into a series of chuncks, each of wich is represented by an integer $m$ ranging from $1$ to $n$
+- To **encrypt** each chunk $c$, she compute
+  $$
+    c = m^{e} \mod n
+  $$
+
+### Decritpion
+
+Bob can decrypt each received chuncks using the formula:
+
+$$
+  c^d \mod n = (m^e)^d \mod n = m^{de} \mod n
+$$
+
+Remeber that $d$ is the modular inverse of $e$. Thus $de = 1 \mod \phi(n)$.
+
+We introduce Euler's Theorem for a reason, infact, in number theory it's used erytime
+in order when dealing with powers as it reduces complexity a lot.

@@ -140,10 +140,10 @@ The algorithm is based on the following principle.
   Given integers $a$ and $b$ with $a \neq 0$ and $b=aq+r$, for some $q$ and $r$
   (quiotient ant remainder), then $$ gcd(a,b)=gcd(a,r) $$
 </CalloutBox>
-Break it in steps: 1. Take two integers $a$ and $b$. (if $b \leq a$ swap them) 2.
-If $b$ is 0, then the gcd is $a$. 3. Otherwise, replace $a$ with $b$ and $b$ with
-$a % b$ (the remainder $r$ of the division of $a$ by $b$). 4. Repeat steps 2 and
-3 until $b$ becomes 0.
+Break it in steps: 1. Take two integers $a$ and $b$. (if $b \leq a$ swap them)
+2. If $b$ is 0, then the gcd is $a$. 3. Otherwise, replace $a$ with $b$ and $b$
+with $a % b$ (the remainder $r$ of the division of $a$ by $b$). 4. Repeat steps
+2 and 3 until $b$ becomes 0.
 
 The gcd is the last non-zero remainder, which is the largest positive integer that divides both $a$ and $b$.
 
@@ -152,6 +152,8 @@ function gcd(a, b) {
   return b === 0 ? a : gcd(b, a % b);
 }
 ```
+
+`% ` is the remainder opertator in javascript, [here the specidic](https://262.ecma-international.org/5.1/#sec-11.5.2).
 
 Now we can thus algorithically determine whether two integers are coprime:
 
@@ -166,11 +168,41 @@ Now we can thus algorithically determine whether two integers are coprime:
 
 ## Step 5: Find $d$ such that $e \times d = 1 \mod \phi(n)$
 
-The equation $e \times d = 1 \mod \phi(n)$ must be read as $e \times d$ is congruent $1$ modulo $m$.
-Her begin the story related to modular arithmetic.
-We first define what it means **mod** in this context.
+The equation $e \times d = 1 \mod \phi(n)$ must be read as $e \times d$ is congruent to $1$ modulo $m$.
+Here it begins the story related to modular arithmetic.
+We first define what does **modular congruence** means and the symbol **mod** in this context.
 
 <CalloutBox type="definition" title="Modular Congruence">
-  Let $a, b$ be integers and $m$ a positive integers greater then zero. $$ a = b
-  \mod m $$
+  Let $a, b$ be integers and $m$ a positive integers greater then zero. We say
+  that $a$ is congruent to $b$ mod $m$ ($ a = b \mod m $), if there exists an
+  integer $k$, such that $a = b + km$
 </CalloutBox>
+
+Notice that, in the previos definition, $b$ is the remainder of $a$ divided by
+$m$.
+
+Thus, in $ a = b \mod m $
+
+In javascript there is no a real [mod operator still](https://stackoverflow.com/questions/25726760/javascript-modular-arithmetic), but there is a [proposal](https://github.com/tc39/proposal-integer-and-modulus-math).
+Mod operator can be achived using the javascript reminder operator % as follow:
+
+```javascript
+a mod b = ((a % b) + b) % b
+```
+
+We can rewrite equation $e \times d = 1 \mod \phi(n)$ as $d = e^{-1} \mod \phi(n)$.
+$e^{-1} is the modular inverse. The existence of a modular inverse is 
+ensured by the fact that $e$ and $\phi(n)$ are coprime (remebmer the porevious step?).
+We can acttula informally see why this happens
+
+$$
+
+$$
+
+<CalloutBox type="definition" title="Modular inverse">
+  Let $a, b$ be integers and $m$ a positive integers greater then zero. We say
+  that $a$ is congruent to $b$ mod $m$ ($ a = b \mod m $), if there exists an
+  integer $k$, such that $a = b + km$
+</CalloutBox>
+
+So to compute $d$, we used the fact that there exists a modular

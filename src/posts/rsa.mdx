@@ -213,30 +213,30 @@ which provides deeper insight into why RSA encryption\decription works so smootl
 
 <CalloutBox type="theorem" title="Euler's Theorem">
   Let $m$ be a positive integer. For any integer $a$ that is coprime to $m$, we have:  
-  $$a^{\phi(m)} = 1 \mod m$$
+  $$a^\{\phi(m)\} = 1 \mod m$$
 </CalloutBox>
 
 Since Bob knows $\phi(n)$, he can use Euler's Theorem to compute $e^{-1}$:
 
 $$
-  e^{\phi(n)} \equiv 1 \mod n
+  e^\{\phi(n)\} \equiv 1 \mod n
 $$
 
 This implies:
 
 $$
-  e^{\phi(n) - 1} \equiv e^{-1} \mod n
+  e^\{\phi(n) - 1\} \equiv e^\{-1\} \mod n
 $$
 
 So Bob can compute:
 
 $$
-  d = e^{\phi(n) - 1} \mod \phi(n)
+  d = e^\{\phi(n) - 1\} \mod \phi(n)
 $$
 
 to obtain the **modular inverse**.
 
-$e^{\phi(n) - 1}$ is calculated through the fast [exponentiation algorithm](https://www.khanacademy.org/computing/computer-science/cryptography/modarithmetic/a/modular-exponentiation) (also known as exponentiation by squaring or binary exponentiation)
+$e^\{\phi(n) - 1\}$ is calculated through the fast [exponentiation algorithm](https://www.khanacademy.org/computing/computer-science/cryptography/modarithmetic/a/modular-exponentiation) (also known as exponentiation by squaring or binary exponentiation)
 
 ---
 
@@ -259,7 +259,7 @@ Alice will be able to send a message to Bob in the following way:
 Bob can decrypt each received chuncks using the formula:
 
 $$
-  c^d \mod n = (m^e)^d \mod n = m^{de} \mod n
+  c^d \mod n = (m^e)^d \mod n = m^\{de\} \mod n
 $$
 
 Remeber that $d$ is the modular inverse of $e$. Thus $de = 1 \mod \phi(n)$.

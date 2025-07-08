@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import Link from "next/link";
 import { compileMDX } from "next-mdx-remote/rsc";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
@@ -32,6 +33,7 @@ export default async function PostPage({ params }: Props) {
 
   return (
     <article className="prose lg:prose-xl px-4 lg:px-0 mx-auto text-justify">
+      <Link href="/">← Back to Home</Link>
       {content}
     </article>
   );

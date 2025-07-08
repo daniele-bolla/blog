@@ -79,7 +79,7 @@ export default function CalloutBox({ type, title, children }: Props) {
           style.label
         )}
       </div>
-      <div className="text-gray-800 text-base p-4">{children}</div>
+      <div className="text-gray-800 p-4">{children}</div>
     </div>
   );
 }

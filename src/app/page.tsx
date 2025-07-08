@@ -12,7 +12,10 @@ const posts = [
 
 export default function Home() {
   return (
-    <main className="max-w-3xl mx-auto px-4 py-12">
+    <main className="max-w-3xl mx-auto px-4 py-12 prose lg:prose-xl px-4 lg:px-0 mx-auto">
+      <Link className="" href="https://daniele-bolla.github.io/">
+        ← Back to Home
+      </Link>
       <h1 className="text-3xl font-bold mb-8">Posts</h1>
       <ul className="space-y-6">
         {posts.map((post) => (

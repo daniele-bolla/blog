@@ -32,10 +32,18 @@ export default async function PostPage({ params }: Props) {
   });
 
   return (
-    <article className="prose lg:prose-xl px-4 lg:px-0 mx-auto text-justify">
-      <Link href="/">← Back to Posts</Link>
-      {content}
-    </article>
+    <>
+      <div className="bg-white  sticky top-0 px-4   z-60 ">
+        <div className=" prose lg:prose-xl mx-auto ">
+          <Link className="" href="/">
+            ← Back to Posts
+          </Link>
+        </div>
+      </div>
+      <article className="prose lg:prose-xl px-4 lg:px-0 mx-auto text-justify">
+        {content}
+      </article>
+    </>
   );
 }
 

@@ -31,7 +31,7 @@ export default async function PostPage({ params }: Props) {
   });
 
   return (
-    <article className="prose lg:prose-xl px-4 lg:px-0 mx-auto">
+    <article className="prose lg:prose-xl px-4 lg:px-0 mx-auto text-justify">
       {content}
     </article>
   );

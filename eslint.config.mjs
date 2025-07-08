@@ -10,6 +10,9 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  {
+    ignores: ["**/*.mdx"],
+  },
   ...compat.config({
     extends: ["next", "plugin:mdx/recommended"],
     plugins: ["mdx", "prettier"],

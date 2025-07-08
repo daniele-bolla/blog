@@ -3,6 +3,8 @@ import path from "path";
 import { compileMDX } from "next-mdx-remote/rsc";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
+import remarkGfm from "remark-gfm";
+import rehypeSlug from "rehype-slug";
 import CalloutBox from "@/components/CalloutBox";
 
 type Props = {
@@ -22,14 +24,25 @@ export default async function PostPage({ params }: Props) {
     },
     options: {
       mdxOptions: {
-        remarkPlugins: [remarkMath],
-        rehypePlugins: [rehypeKatex],
+        remarkPlugins: [remarkGfm, remarkMath],
+        rehypePlugins: [rehypeSlug, rehypeKatex],
       },
     },
   });
 
   return <article className="prose prose-lg mx-auto">{content}</article>;
 }
+// export default async function Page({
+//   params,
+// }: {
+//   params: Promise<{ slug: string }>;
+// }) {
+//   const { slug } = await params;
+//   const { default: Post } = await import(`@/posts/${slug}.mdx`);
+
+//   return <Post />;
+// }
+
 export async function generateStaticParams() {
   const fs = require("fs");
   const path = require("path");

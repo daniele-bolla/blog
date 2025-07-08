@@ -71,7 +71,7 @@ Bob can generate a pair of keys using the following steps:
     <li>Compute $n = p \times q$</li>
     <li>Compute $\phi(n) = (p − 1)(q − 1)$</li>
     <li>Choose $e$ such that $1 < e < \phi(n)$ where $e$ is coprime to $\phi(n)$ ($gcd(e, \phi(n)) = 1$)</li>
-    <li>Find $d$ such that $e \times d = 1 \mod \phi(n)$</li>
+    <li>Find $d$ such that $e \times d \equiv 1 \pmod{\phi(n)}$</li>
     <li>The public key is $(e, n)$; the private key consists of $(d, p, q)$</li>
   </ol>
 </CalloutBox>
@@ -115,7 +115,7 @@ $\phi(n) = (p − 1)(q − 1)$.
 
 Note: computing $\phi(n)$ from just $n$ would require factoring $n$, which is copmputationlly hard (recall step 1) if you don't know $p$ and $q$.
 
-### Step 4: Choose $e$ such that $1 < e < \phi(n)$ where $e$ is coprime to $\phi(n)$ ($gcd(e, \phi(n)) = 1$)$
+### Step 4: Choose $e$ such that $1 < e < \phi(n)$ where $e$ is coprime to $\phi(n)$ ($gcd(e, \phi(n)) = 1$)
 
 Now Bob must choose an **exponent** $e$.
 
@@ -141,8 +141,8 @@ To compute the gcd, Bob can use the **Euclidean algorithm**, one of the oldest k
 The algorithm is based on the following principle:
 
 <CalloutBox type="theorem" title="">
-  If $a \neq 0$ and $b = aq + r$ for some $q$ and $r$, then $$ \gcd(a, b) =
-  \gcd(a, r) $$
+  If $a \neq 0$ and $b = aq + r$ for some $q$ and $r$, then $ \gcd(a, b) =
+  \gcd(a, r) $
 </CalloutBox>
 
 It's extremely easy top write the algorithm in javascript:
@@ -173,7 +173,7 @@ Now, Bob can algorithmically determine whether two integers are **coprime**:
   The integers 8 and 15 are coprime because their gcd is 1.
 </CalloutBox>
 
-### Step 5: Find $d$ such that $e \times d = 1 \mod \phi(n)$
+### Step 5: Find $d$ such that $e \times d \equiv 1 \pmod{\phi(n)}$
 
 The equation $e \times d = 1 \mod \phi(n)$ must be read as
 $e \times d$ is congruent $1$ modulo $\phi(n)$.
@@ -183,8 +183,7 @@ We now delve into modular arithmetic, starting with its foundation:
 
 <CalloutBox type="definition" title="Modular Congruence">
   Let $a$ and $b$ be integers, and let $m$ be a positive integer. We say that
-  $a$ is <strong>congruent</strong> to $b$ modulo $m$ (written as $a = b \mod
-  m$), if there exists an integer $k$ such that: $a = b + km$.
+  $a$ is <strong>congruent</strong> to $b$ modulo $m$ (written as $a \equiv b \pmod m$), if there exists an integer $k$ such that: $a = b + km$.
 </CalloutBox>
 
 Nothe: $b$ is the **remainder** when dividing $a$ by $m$.
@@ -194,10 +193,17 @@ JavaScript doesn’t have a true `mod` operator, only a **remainder operator** `
 
 There is anyway a [proposal](https://github.com/tc39/proposal-integer-and-modulus-math).
 
-Now, the equation  
-$e \times d \equiv 1 \mod \phi(n)$  
-can be rewritten as:  
-$d = e^{-1} \mod \phi(n)$
+Now, the equation
+
+$
+  e \times d \equiv 1 \pmod{\phi(n)}
+$
+
+can be rewritten as:
+
+$
+  d \equiv e^{-1} \pmod{\phi(n)}
+$
 
 That is: $d$ is the **modular inverse** of $e$ modulo $\phi(n)$.
 
@@ -211,32 +217,38 @@ To compute $d$, Bob can use the **Extended Euclidean Algorithm**, a standard met
 For theoretical reasons, I'll introduce a more elegant method based on **Euler's Theorem**,
 which provides deeper insight into why RSA encryption\decription works so smootlhy.
 
+$
+\int_0^\infty e^{-x^2} dx = \frac{\sqrt{\pi}}{2}
+$
+
 <CalloutBox type="theorem" title="Euler's Theorem">
   Let $m$ be a positive integer. For any integer $a$ that is coprime to $m$, we have:  
-  $$a^\{\phi(m)\} = 1 \mod m$$
+  $
+    a^{ \phi(m) } \equiv 1 \pmod m
+  $
 </CalloutBox>
 
 Since Bob knows $\phi(n)$, he can use Euler's Theorem to compute $e^{-1}$:
 
-$$
-  e^\{\phi(n)\} \equiv 1 \mod n
-$$
+$
+  e^{\phi(n)} \equiv 1 \pmod n
+$
 
 This implies:
 
-$$
-  e^\{\phi(n) - 1\} \equiv e^\{-1\} \mod n
-$$
+$
+  e^{\phi(n) - 1} \equiv e^{-1} \pmod n
+$
 
 So Bob can compute:
 
-$$
-  d = e^\{\phi(n) - 1\} \mod \phi(n)
-$$
+$
+  d = e^{\phi(n) - 1} \pmod{\phi(n)}
+$
 
 to obtain the **modular inverse**.
 
-$e^\{\phi(n) - 1\}$ is calculated through the fast [exponentiation algorithm](https://www.khanacademy.org/computing/computer-science/cryptography/modarithmetic/a/modular-exponentiation) (also known as exponentiation by squaring or binary exponentiation)
+$e^{\phi(n) - 1}$ is calculated through the fast [exponentiation algorithm](https://www.khanacademy.org/computing/computer-science/cryptography/modarithmetic/a/modular-exponentiation) (also known as exponentiation by squaring or binary exponentiation)
 
 ---
 
@@ -250,19 +262,19 @@ Alice will be able to send a message to Bob in the following way:
 
 - She converts the message into a series of chuncks, each of wich is represented by an integer $m$ ranging from $1$ to $n$
 - To **encrypt** each chunk $c$, she compute
-  $$
-    c = m^{e} \mod n
-  $$
+  $
+    c = m^{e} \pmod n
+  $
 
 ### Decritpion
 
 Bob can decrypt each received chuncks using the formula:
 
-$$
-  c^d \mod n = (m^e)^d \mod n = m^\{de\} \mod n
-$$
+$
+  c^d \pmod n = (m^e)^d \pmod n = m^{de} \pmod n
+$
 
-Remeber that $d$ is the modular inverse of $e$. Thus $de = 1 \mod \phi(n)$.
+Remeber that $d$ is the modular inverse of $e$. Thus $de \equiv 1 \pmod{\phi(n)}$.
 
 We introduce Euler's Theorem for a reason, infact, in number theory it's used erytime
 in order when dealing with powers as it reduces complexity a lot.

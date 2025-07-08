@@ -33,7 +33,7 @@ export default async function PostPage({ params }: Props) {
 
   return (
     <article className="prose lg:prose-xl px-4 lg:px-0 mx-auto text-justify">
-      <Link href="/">← Back to Home</Link>
+      <Link href="/">← Back to Posts</Link>
       {content}
     </article>
   );

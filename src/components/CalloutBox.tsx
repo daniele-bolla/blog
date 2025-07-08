@@ -66,7 +66,7 @@ export default function CalloutBox({ type, title, children }: Props) {
   const style = styles[type];
 
   return (
-    <div className={`  my-6  ${style.bg} ${style.border}`}>
+    <div className={`shadow  my-6  ${style.bg} ${style.border}`}>
       <div
         className={`text-sm font-bold text-white p-4 ${style.header} mb-2 flex items-center gap-2`}
       >

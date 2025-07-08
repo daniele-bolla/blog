@@ -5,9 +5,23 @@ import CalloutBox from "@/components/CalloutBox";
 RSA is one of the first public-key encryption algorithms ever used.
 For this reason, it serves well as a pedagogical example for readers curious about **cryptography**.
 
-In this post, I’ll focus more on the mathematical aspects of RSA and specifically **number theory**.
+In this post, I’ll explore the mathematical foundations of the system, with a focus on **number theory**.
 
----
+Although the discussion leans toward the theoretical side, I encourage readers from a coding background to follow along.
+
+A basic understanding of arithmetic and modular arithmetic will be helpful.
+I'll link to external resources where appropriate, rather than covering every concept in depth.
+
+For a more technical and programmer-oriented point of view, there are other resources out there.
+Here I've linked some basic implementations in JavaScript.
+
+In mathematics, it's often useful to begin with simple cases to build intuition.
+For example, prime numbers can be understood at varying levels of complexity.
+
+I’ll start with the most familiar definition, using basic examples to illustrate key ideas.
+
+Another valuable habit is to revisit concepts multiple times.
+The more deeply you internalize them, the more naturally you’ll be able to apply them later on.
 
 ## Let’s begin by understanding the system.
 
@@ -183,7 +197,8 @@ We now delve into modular arithmetic, starting with its foundation:
 
 <CalloutBox type="definition" title="Modular Congruence">
   Let $a$ and $b$ be integers, and let $m$ be a positive integer. We say that
-  $a$ is <strong>congruent</strong> to $b$ modulo $m$ (written as $a \equiv b \pmod m$), if there exists an integer $k$ such that: $a = b + km$.
+  $a$ is <strong>congruent</strong> to $b$ modulo $m$ (written as $a \equiv b
+  \pmod m$), if there exists an integer $k$ such that: $a = b + km$.
 </CalloutBox>
 
 Nothe: $b$ is the **remainder** when dividing $a$ by $m$.
@@ -195,15 +210,15 @@ There is anyway a [proposal](https://github.com/tc39/proposal-integer-and-modulu
 
 Now, the equation
 
-$
+$$
   e \times d \equiv 1 \pmod{\phi(n)}
-$
+$$
 
 can be rewritten as:
 
-$
+$$
   d \equiv e^{-1} \pmod{\phi(n)}
-$
+$$
 
 That is: $d$ is the **modular inverse** of $e$ modulo $\phi(n)$.
 
@@ -217,34 +232,30 @@ To compute $d$, Bob can use the **Extended Euclidean Algorithm**, a standard met
 For theoretical reasons, I'll introduce a more elegant method based on **Euler's Theorem**,
 which provides deeper insight into why RSA encryption\decription works so smootlhy.
 
-$
-\int_0^\infty e^{-x^2} dx = \frac{\sqrt{\pi}}{2}
-$
-
 <CalloutBox type="theorem" title="Euler's Theorem">
   Let $m$ be a positive integer. For any integer $a$ that is coprime to $m$, we have:  
-  $
+  $$
     a^{ \phi(m) } \equiv 1 \pmod m
-  $
+  $$
 </CalloutBox>
 
 Since Bob knows $\phi(n)$, he can use Euler's Theorem to compute $e^{-1}$:
 
-$
+$$
   e^{\phi(n)} \equiv 1 \pmod n
-$
+$$
 
 This implies:
 
-$
+$$
   e^{\phi(n) - 1} \equiv e^{-1} \pmod n
-$
+$$
 
 So Bob can compute:
 
-$
+$$
   d = e^{\phi(n) - 1} \pmod{\phi(n)}
-$
+$$
 
 to obtain the **modular inverse**.
 
@@ -262,19 +273,55 @@ Alice will be able to send a message to Bob in the following way:
 
 - She converts the message into a series of chuncks, each of wich is represented by an integer $m$ ranging from $1$ to $n$
 - To **encrypt** each chunk $c$, she compute
-  $
+  $$
     c = m^{e} \pmod n
-  $
+  $$
 
 ### Decritpion
 
-Bob can decrypt each received chuncks using the formula:
+Bob can decrypt each received chunk using the formula:
 
-$
+$$
   c^d \pmod n = (m^e)^d \pmod n = m^{de} \pmod n
-$
+$$
 
-Remeber that $d$ is the modular inverse of $e$. Thus $de \equiv 1 \pmod{\phi(n)}$.
+Remember that $d$ is the modular inverse ($e^{-1}$) of $e$. Thus $de \equiv 1 \pmod{\phi(n)}$, and the equation becomes:
 
-We introduce Euler's Theorem for a reason, infact, in number theory it's used erytime
-in order when dealing with powers as it reduces complexity a lot.
+$$
+ m^{de} \pmod n = m^{1 \pmod {\phi(n)}} \pmod n
+$$
+
+By definition of modular congruence, $1 \pmod {\phi(n)}$ can be written as $1 + k \times \phi(n)$
+for some $k$:
+
+$$
+ m^{1 \pmod {\phi(n)}} \pmod n =  m^{1 + k \times \phi(n)} \pmod n
+$$
+
+Using the power properties:
+
+$$
+ m^{1 + k \times \phi(n)} \pmod n = m^1*m^{k*\phi(n)} \pmod n= m*(m^{\phi(n)})^k \pmod n
+$$
+
+We introduced Euler's Theorem for a reason. In fact, in number theory it's used every time
+when dealing with powers as it simplifies the problem significantly.
+Euler tells us that $m^{\phi(n)} = 1 \pmod n$, thus:
+
+$$
+ m*(m^{\phi(n)})^k \pmod n =  m*(1)^k \pmod n = m \pmod n
+$$
+
+Thus for Bob, recovering the message for each chunk $c$ will simply evaluate to:
+
+$$
+  c^d \pmod n = (m^e)^d \pmod n = m \pmod n
+$$
+
+**Exercise:** Rewrite the encryption and decryption process by yourself, focusing only on one chunk as explained.
+
+## Conclusion
+
+I hope to have explained the theoretical part of RSA for generating keys and encryption/decryption.
+For users encountering this concept for the first time, it will certainly be overwhelming—that's normal.
+Hopefully, you can come back to this while learning the basic concepts.

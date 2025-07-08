@@ -30,18 +30,12 @@ export default async function PostPage({ params }: Props) {
     },
   });
 
-  return <article className="prose prose-lg mx-auto">{content}</article>;
+  return (
+    <article className="prose lg:prose-xl px-4 lg:px-0 mx-auto">
+      {content}
+    </article>
+  );
 }
-// export default async function Page({
-//   params,
-// }: {
-//   params: Promise<{ slug: string }>;
-// }) {
-//   const { slug } = await params;
-//   const { default: Post } = await import(`@/posts/${slug}.mdx`);
-
-//   return <Post />;
-// }
 
 export async function generateStaticParams() {
   const fs = require("fs");

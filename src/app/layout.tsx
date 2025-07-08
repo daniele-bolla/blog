@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "katex/dist/katex.min.css";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Daniele's blog",
@@ -16,9 +18,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`bg-white text-black font-sans antialiased`}>
         <div className="flex flex-col min-h-screen">
-          <header className="p-4 text-center"></header>
+          <Header />
           <main className="flex-grow ">{children}</main>
-          <footer className=" p-4">Footer</footer>
+          <Footer />
         </div>
       </body>
     </html>

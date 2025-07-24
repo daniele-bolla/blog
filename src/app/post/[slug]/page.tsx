@@ -6,6 +6,8 @@ import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
+import remarkFrontmatter from 'remark-frontmatter'
+
 import CalloutBox from "@/components/CalloutBox";
 
 type Props = {
@@ -25,7 +27,7 @@ export default async function PostPage({ params }: Props) {
     },
     options: {
       mdxOptions: {
-        remarkPlugins: [remarkGfm, remarkMath],
+        remarkPlugins: [remarkGfm, remarkMath, remarkFrontmatter],
         rehypePlugins: [rehypeSlug, rehypeKatex],
       },
     },

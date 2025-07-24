@@ -9,6 +9,7 @@ const posts = [
     date: "24-07-2025",
   },
 ];
+// ADD SEO https://dev.to/pavel_buyeu/building-an-seo-optimized-blog-with-nextjs-and-mdx-from-routing-to-rendering-2h72
 
 export default function Home() {
   return (

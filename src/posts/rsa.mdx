@@ -1,4 +1,3 @@
-import CalloutBox from "@/components/CalloutBox";
 ---
 title: "Understanding RS"
 slug: "post/rsa"
@@ -7,6 +6,8 @@ date: "2025-05-20"
 tags: ["rsa", "number-theory", "javascript", "cryptograpy", "math"]
 author: "daniele-bolla"
 ---
+import CalloutBox from "@/components/CalloutBox";
+
 # Understanding RSA
 
 RSA is one of the first public-key encryption algorithms ever used.
@@ -118,14 +119,14 @@ However, it's important to understand how number representation and arithmetic w
 JavaScript uses the **IEEE 754 standard for floating-point arithmetic**, which is widely adopted across languages like Python, Java, and C. 
 While this format allows for a wide range of numerical operations, it introduces limitations when it comes to precision: numbers above approximately 
 $2^{53} −1$ (or around 15–16 digits) cannot be represented accurately as integers.
-You can check wich is the maxiumum reporesentable number in Javascript by:
+You can check wich is the maxiumum representable number in Javascript by:
 ```javascript
 console.log(Number.MAX_SAFE_INTEGER);
 // Expected output: 9007199254740991
 ```
 
-This limitation is especially important in cryptographic contexts like RSA, where we deal with very large integers—hundreds or even 
-thousands of bits long. 
+This limitation is especially important in cryptographic contexts like RSA, 
+where we deal with very large integers, hundreds or even thousands of bits long. 
 Attempting to perform RSA-related arithmetic using JavaScript’s built-in Number type would result in incorrect values due to 
 loss of precision.
 

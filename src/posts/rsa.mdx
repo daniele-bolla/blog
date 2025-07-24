@@ -1,6 +1,6 @@
 import CalloutBox from "@/components/CalloutBox";
 
-# Understanding RSA (Draft)
+# Understanding RSA
 
 RSA is one of the first public-key encryption algorithms ever used.
 For this reason, it serves well as a pedagogical example for readers curious about **cryptography**.
@@ -104,8 +104,43 @@ It is **notoriously difficult** to factor the product of two large primes and th
 
 ### Step 2: Compute $n = p \times q$
 
-This is straightforward.
+This step is straightforward: we multiply the two large prime numbers 
+$p$ and $q to obtain the modulus $n$, which is used as part of both the public and private keys in the RSA algorithm.
 
+However, it's important to understand how number representation and arithmetic work in JavaScript and most modern programming languages. 
+JavaScript uses the **IEEE 754 standard for floating-point arithmetic**, which is widely adopted across languages like Python, Java, and C. 
+While this format allows for a wide range of numerical operations, it introduces limitations when it comes to precision: numbers above approximately 
+$2^{53} −1$ (or around 15–16 digits) cannot be represented accurately as integers.
+You can check wich is the maxiumum reporesentable number in Javascript by:
+```javascript
+console.log(Number.MAX_SAFE_INTEGER);
+// Expected output: 9007199254740991
+```
+
+This limitation is especially important in cryptographic contexts like RSA, where we deal with very large integers—hundreds or even 
+thousands of bits long. 
+Attempting to perform RSA-related arithmetic using JavaScript’s built-in Number type would result in incorrect values due to 
+loss of precision.
+
+To work around this, JavaScript provides a native BigInt type, which enables precise integer arithmetic beyond the safe limit of 
+regular numbers. For example:
+
+```javascript
+  const p = 61n;
+  const q = 53n;
+  const n = p * q; // n = 3233n
+```
+
+Note the n suffix, which denotes a BigInt literal.
+
+JavaScript’s BigInt type comes with its own set of operators (+, -, *, /, %, and **), allowing you to perform arithmetic directly. 
+However, BigInt is not compatible with the built-in Math object—functions 
+like Math.sqrt() or Math.pow() do not work with BigInt and will throw an error if used with them.
+There are anyway third-party libraries offer advanced functionality for working with large integers 
+and modular arithmetic to support methods for modular 
+exponentiation and inverse, which are essential in RSA encryption and decryption.
+
+In summary, always use BigInt or a specialized library like big-integer when working with cryptographic computations in JavaScript to avoid precision issues inherent in floating-point arithmetic.
 ### Step 3: Compute $\phi(n) = (p − 1)(q − 1)$
 
 Here we introduce $\phi(n)$, the **Euler's totient function**.

@@ -5,8 +5,8 @@ const posts = [
     slug: "post/rsa",
     title: "Understanding RSA",
     description:
-      "A mathematical and JavaScript-based explanation of RSA encryption.",
-    date: "2025-07-04",
+      "A mathematical explanation of RSA encryption for coders (Javscript) and enthusiasts.",
+    date: "24-07-2025",
   },
 ];
 
